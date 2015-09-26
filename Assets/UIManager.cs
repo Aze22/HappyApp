@@ -1,15 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class UIManager : MonoBehaviour {
+namespace HappyApp
+{
+    public class UIManager : MonoBehaviour
+    {
+        public View_Quote m_quoteView;
+        public Stack m_viewStack;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+        void Start()
+        {
+            HideAllViews(false);
+            m_quoteView.Show(true, 1f);
+        }
+
+        public void HideAllViews(bool _animated = true)
+        {
+            m_quoteView.Hide(_animated);
+        }
+    }
 }

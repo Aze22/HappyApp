@@ -16,13 +16,15 @@ namespace Google2u
 	{
 		public string _Author;
 		public string _Quote;
-		public QuotesRow(string __ID, string __Author, string __Quote) 
+		public string _Book;
+		public QuotesRow(string __ID, string __Author, string __Quote, string __Book) 
 		{
 			_Author = __Author.Trim();
 			_Quote = __Quote.Trim();
+			_Book = __Book.Trim();
 		}
 
-		public int Length { get { return 2; } }
+		public int Length { get { return 3; } }
 
 		public string this[int i]
 		{
@@ -43,6 +45,9 @@ namespace Google2u
 				case 1:
 					ret = _Quote.ToString();
 					break;
+				case 2:
+					ret = _Book.ToString();
+					break;
 			}
 
 			return ret;
@@ -53,11 +58,14 @@ namespace Google2u
 			var ret = System.String.Empty;
 			switch( colID )
 			{
-				case "_Author":
+				case "Author":
 					ret = _Author.ToString();
 					break;
-				case "_Quote":
+				case "Quote":
 					ret = _Quote.ToString();
+					break;
+				case "Book":
+					ret = _Book.ToString();
 					break;
 			}
 
@@ -66,12 +74,13 @@ namespace Google2u
 		public override string ToString()
 		{
 			string ret = System.String.Empty;
-			ret += "{" + "_Author" + " : " + _Author.ToString() + "} ";
-			ret += "{" + "_Quote" + " : " + _Quote.ToString() + "} ";
+			ret += "{" + "Author" + " : " + _Author.ToString() + "} ";
+			ret += "{" + "Quote" + " : " + _Quote.ToString() + "} ";
+			ret += "{" + "Book" + " : " + _Book.ToString() + "} ";
 			return ret;
 		}
 	}
-	public class Quotes :  Google2uComponentBase, IGoogle2uDB
+	public sealed class Quotes : IGoogle2uDB
 	{
 		public enum rowIds {
 			Quote1, Quote2
@@ -80,13 +89,22 @@ namespace Google2u
 			"Quote1", "Quote2"
 		};
 		public System.Collections.Generic.List<QuotesRow> Rows = new System.Collections.Generic.List<QuotesRow>();
-		public override void AddRowGeneric (System.Collections.Generic.List<string> input)
+
+		public static Quotes Instance
 		{
-			Rows.Add(new QuotesRow(input[0],input[1],input[2]));
+			get { return NestedQuotes.instance; }
 		}
-		public override void Clear ()
+
+		private class NestedQuotes
 		{
-			Rows.Clear();
+			static NestedQuotes() { }
+			internal static readonly Quotes instance = new Quotes();
+		}
+
+		private Quotes()
+		{
+			Rows.Add( new QuotesRow("Quote1", "Amélie Beaudroit", "Ploup", "The Ploup Book"));
+			Rows.Add( new QuotesRow("Quote2", "Charles Pearson", "Haha salut", "Lolibook"));
 		}
 		public IGoogle2uRow GetGenRow(string in_RowString)
 		{
