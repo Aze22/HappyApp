@@ -24,5 +24,12 @@ namespace HappyApp
 		{
 			SoomlaProfile.Login(Provider.FACEBOOK);
 		}
+
+		public void RefreshQuotePressed()
+		{
+			HideAllViews(false);
+			m_quoteView.SetNewQuote();
+			m_quoteView.Show(true, 0.1f);
+		}
     }
 }

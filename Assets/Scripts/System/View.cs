@@ -67,7 +67,8 @@ namespace HappyApp
 
         public virtual void Hide(bool _animated = true, float _delay = 0, UnityAction _OnHideFinished = null)
         {
-            OnHideFinishedEvent.AddListener(OnHideFinished);
+			animator.enabled = false;
+			OnHideFinishedEvent.AddListener(OnHideFinished);
             OnHideFinishedEvent.SafeAddListener(_OnHideFinished);
             OnHideFinishedEvent.SafeInvoke();
         }

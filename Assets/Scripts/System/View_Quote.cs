@@ -25,12 +25,17 @@ namespace HappyApp
         // Use this for initialization
         void Start()
         {
-            m_currentQuote = Quotes.Instance.GetRow((Quotes.rowIds) Random.Range(0, Quotes.Instance.Rows.Count));
-
-            m_quoteText.text = string.Concat("'", m_currentQuote._Quote, "'");
-            m_authorText.text = string.Concat("- ", m_currentQuote._Author);
-            m_bookText.text = m_currentQuote._Book;
+			SetNewQuote();
         }
+
+		public void SetNewQuote()
+		{
+			m_currentQuote = Quotes.Instance.GetRow((Quotes.rowIds) Random.Range(0, Quotes.Instance.Rows.Count));
+
+			m_quoteText.text = string.Concat("'", m_currentQuote._Quote, "'");
+			m_authorText.text = string.Concat("- ", m_currentQuote._Author);
+			m_bookText.text = m_currentQuote._Book;
+		}
 
         public override void Show(bool _animated = true, float _delay = 0, UnityAction _OnShowFinished = null)
         {
@@ -42,7 +47,18 @@ namespace HappyApp
             StartCoroutine(ShowQuoteRoutine(_animated, _delay, _OnShowFinished));
         }
 
-        private IEnumerator ShowQuoteRoutine(bool _animated = true, float _delay = 0f, UnityAction _OnShowFinished = null)
+		public override void Hide(bool _animated = true, float _delay = 0, UnityAction _OnHideFinished = null)
+		{
+			base.Hide(_animated, _delay, _OnHideFinished);
+			
+			m_authorText.rectTransform.localScale = Utils.zeroUI;
+			m_bookText.rectTransform.localScale = Utils.zeroUI;
+			m_bookText.GetComponent<Animator>().enabled = false;
+			m_authorText.GetComponent<Animator>().enabled = false;
+		}
+
+
+		private IEnumerator ShowQuoteRoutine(bool _animated = true, float _delay = 0f, UnityAction _OnShowFinished = null)
         {
             yield return new WaitForSeconds(_delay);
 
