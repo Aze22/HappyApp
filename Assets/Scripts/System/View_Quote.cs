@@ -25,8 +25,7 @@ namespace HappyApp
         // Use this for initialization
         void Start()
         {
- 
-            m_currentQuote = Quotes.Instance.GetRow(Quotes.rowIds.Quote1);
+            m_currentQuote = Quotes.Instance.GetRow((Quotes.rowIds) Random.Range(0, Quotes.Instance.Rows.Count));
 
             m_quoteText.text = string.Concat("'", m_currentQuote._Quote, "'");
             m_authorText.text = string.Concat("- ", m_currentQuote._Author);
@@ -35,10 +34,10 @@ namespace HappyApp
 
         public override void Show(bool _animated = true, float _delay = 0, UnityAction _OnShowFinished = null)
         {
-            m_authorText.enabled = false;
-            m_bookText.enabled = false;
+			m_authorText.rectTransform.localScale = Utils.zeroUI;
+			m_bookText.rectTransform.localScale = Utils.zeroUI;
 
-            base.Show(_animated, _delay, _OnShowFinished);
+			base.Show(_animated, _delay, _OnShowFinished);
 
             StartCoroutine(ShowQuoteRoutine(_animated, _delay, _OnShowFinished));
         }
@@ -50,11 +49,11 @@ namespace HappyApp
             if (_animated)
             {
                 yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length + m_authorDelay);
-                m_authorText.enabled = true;
+				m_authorText.GetComponent<Animator>().enabled = true;
 
                 yield return new WaitForSeconds(m_bookDelay);
-                m_bookText.enabled = true;
-            }
+				m_bookText.GetComponent<Animator>().enabled = true;
+			}
         }
 
     }

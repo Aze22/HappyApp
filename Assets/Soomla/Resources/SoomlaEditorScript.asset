@@ -26,7 +26,7 @@ MonoBehaviour:
     - name: HighwayEnvKey
       value: bd5136f9-b3bc-4f37-ac1f-0357be4df20d
     - name: FBPermissions
-      value: email,user_birthday,user_photos,user_friends,read_stream
+      value: email,user_birthday,public_profile,user_friends
     - name: TwitterConsumerKey
       value: YOUR TWITTER CONSUMER KEY
     - name: TwitterConsumerSecret
