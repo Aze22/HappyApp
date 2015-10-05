@@ -994,7 +994,7 @@ namespace Soomla.Profile
 			return customParamsJson.ToString();
 		}
 
-		private static byte[] GetImageBytesFromTexture(string imageFileName, Texture2D imageTexture)
+		public static byte[] GetImageBytesFromTexture(string imageFileName, Texture2D imageTexture)
 		{
 			string[] fileNameComponents = imageFileName.Split ('.');
 			if (fileNameComponents.Length < 2) 
@@ -1010,7 +1010,7 @@ namespace Soomla.Profile
 				return imageTexture.EncodeToJPG();
 		}
 		
-		private static IEnumerator TakeScreenshot(Provider provider, string title, string message, string payload, Reward reward)
+		public static IEnumerator TakeScreenshot(Provider provider, string title, string message, string payload, Reward reward)
 		{
 			yield return new WaitForEndOfFrame();
 			

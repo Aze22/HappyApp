@@ -28,13 +28,13 @@ MonoBehaviour:
     - name: FBPermissions
       value: email,user_birthday,public_profile,user_friends
     - name: TwitterConsumerKey
-      value: YOUR TWITTER CONSUMER KEY
+      value: bmNABYCUqqdRJEqR9kzcJFhRf
     - name: TwitterConsumerSecret
-      value: YOUR TWITTER CONSUMER SECRET
+      value: r91miEr4DKJqaG3iJl9WdGGlsToCyxoG14j9oOLPuXD5IYskWv
     - name: GPClientId
-      value: YOUR GOOGLE+ CLIENT ID
+      value: 830126453092-4hlumuupd022m2cdcm81tetpld2uh565.apps.googleusercontent.com
     - name: SocialIntegration
-      value: facebook,1;twitter,0;google,0
+      value: facebook,1;twitter,1;google,1
     - name: GPlayBP
       value: True
     - name: AndroidPublicKey
@@ -42,4 +42,8 @@ MonoBehaviour:
     - name: AndroidTestPurchases
       value: True
     - name: FBAutoLogin
+      value: True
+    - name: TwitterAutoLogin
+      value: True
+    - name: GoogleAutoLogin
       value: True

@@ -20,7 +20,7 @@ namespace HappyApp
 
         [HideInInspector]
         public QuotesRow m_currentQuote;
-        
+		private IEnumerator m_currentShowQuoteRoutine = null;
 
         // Use this for initialization
         void Start()
@@ -44,11 +44,18 @@ namespace HappyApp
 
 			base.Show(_animated, _delay, _OnShowFinished);
 
-            StartCoroutine(ShowQuoteRoutine(_animated, _delay, _OnShowFinished));
+			if (m_currentShowQuoteRoutine != null)
+				StopCoroutine(m_currentShowQuoteRoutine);
+
+			m_currentShowQuoteRoutine = ShowQuoteRoutine(_animated, _delay, _OnShowFinished);
+			StartCoroutine(m_currentShowQuoteRoutine);
         }
 
 		public override void Hide(bool _animated = true, float _delay = 0, UnityAction _OnHideFinished = null)
 		{
+			if (m_currentShowQuoteRoutine != null)
+				StopCoroutine(m_currentShowQuoteRoutine);
+
 			base.Hide(_animated, _delay, _OnHideFinished);
 			
 			m_authorText.rectTransform.localScale = Utils.zeroUI;
@@ -56,7 +63,6 @@ namespace HappyApp
 			m_bookText.GetComponent<Animator>().enabled = false;
 			m_authorText.GetComponent<Animator>().enabled = false;
 		}
-
 
 		private IEnumerator ShowQuoteRoutine(bool _animated = true, float _delay = 0f, UnityAction _OnShowFinished = null)
         {
@@ -67,10 +73,16 @@ namespace HappyApp
                 yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length + m_authorDelay);
 				m_authorText.GetComponent<Animator>().enabled = true;
 
-                yield return new WaitForSeconds(m_bookDelay);
-				m_bookText.GetComponent<Animator>().enabled = true;
-			}
-        }
+				if (!string.IsNullOrEmpty(m_bookText.text))
+				{
+					yield return new WaitForSeconds(m_bookDelay);
+					m_bookText.GetComponent<Animator>().enabled = true;
+				}
 
+				UIManager.GetInstance().m_topButtonsView.Show(true, 1f);
+			}
+
+			m_currentShowQuoteRoutine = null;
+        }
     }
 }
