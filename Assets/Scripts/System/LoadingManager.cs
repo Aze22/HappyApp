@@ -6,7 +6,8 @@ using Grow.Insights;
 using Grow.Sync;
 using Grow.Gifting;
 using Grow.Leaderboards;
-using System;
+using System.Collections.Generic;
+using Soomla.Levelup;
 
 [Prefab("LoadingManager", true)]
 public class LoadingManager : Singleton<LoadingManager>
@@ -23,13 +24,26 @@ public class LoadingManager : Singleton<LoadingManager>
 			InitializeLevelUp();
 			InitializeSocialSystem();
 		}
-		
-		Application.LoadLevel(1);
+
+		LaunchGame();
 	}
 
 	private void InitializeLevelUp()
 	{
-		//SoomlaLevelUp.Initialize(initialWorld);
+		// Simple constructor that receives only an ID.
+		World happyAppInitialWorld = new World("HappyAppWorld");;
+
+		// Create a batch of `Level`s and add them to the `World`. Instead
+		// of creating many levels one by one, you can create them all at
+		// once, and save time.
+		happyAppInitialWorld.BatchAddLevelsWithTemplates (
+			365,                                   // Number of levels in this world
+			new RecordGate("myHappyAppRecordGate", "myHappyAppRecordGateScore", 1),                             // Gate for each of the levels
+			new Score("happyAppScore"),            // Scores for each of the levels
+			new RecordMission("myHappyAppMission", "readQuote", "readQuoteScore", 1)           // Missions for each of the levels
+		);
+
+		SoomlaLevelUp.Initialize(happyAppInitialWorld);
 	}
 
 	private void InitializeStore()
@@ -44,7 +58,10 @@ public class LoadingManager : Singleton<LoadingManager>
 
 	private void InitializeGrow()
 	{
-		
+		HighwayEvents.OnModelSyncFinished += onModelSyncFinished;
+		HighwayEvents.OnModelSyncFailed += onModelSyncFailed;
+		HighwayEvents.OnStateSyncFinished += onStateSyncFinished;
+
 		// Make sure to make this call in your earliest loading scene,
 		// and before initializing any other SOOMLA/GROW components
 		// i.e. before SoomlaStore.Initialize(...)
@@ -74,8 +91,31 @@ public class LoadingManager : Singleton<LoadingManager>
 		GrowGifting.Initialize();
 	}
 
+	public void onModelSyncFinished(IList<string> modules)
+	{
+		Debug.Log("Sync Models with Highway Successful!");
+		LaunchGame();
+	}
+
+	public void onModelSyncFailed(ModelSyncErrorCode errorCode, string failReason)
+	{
+		Debug.Log("Sync with Highway failed! " + errorCode.ToString() + " - " + failReason);
+		LaunchGame();
+    }
+
+	public void onStateSyncFinished(IList<string> changedComponents, IList<string> failedComponents)
+	{
+		Debug.Log("Sync State with Highway Successful!");
+		LaunchGame();
+	}
+
 	private void InitializeSocialSystem()
 	{
 		SocialManager.GetInstance().Init();
+	}
+
+	public void LaunchGame()
+	{
+		Application.LoadLevel(1);
 	}
 }

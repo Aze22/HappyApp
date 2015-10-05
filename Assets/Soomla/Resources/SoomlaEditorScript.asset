@@ -47,3 +47,5 @@ MonoBehaviour:
       value: True
     - name: GoogleAutoLogin
       value: True
+    - name: DebugMessages
+      value: True

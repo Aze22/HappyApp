@@ -39,9 +39,9 @@ namespace HappyApp
 		public void SharePressed()
 		{
 			string screenshotPath = "";
-            TakeScreenshotAndSave("MyHappyApp.jpg", out screenshotPath);
+            TakeScreenshotAndSave("screenshot.jpg", out screenshotPath);
 			
-			SoomlaProfile.MultiShare("I love this quote!", screenshotPath);
+			SoomlaProfile.MultiShare("I love this quote", screenshotPath);
 		}
 
 		public byte[] TakeScreenshot()
@@ -58,7 +58,7 @@ namespace HappyApp
 		public void TakeScreenshotAndSave(string fileName, out string finalPath)
 		{
 			byte[] bytes = TakeScreenshot();
-			SaveScreenshot(bytes, "MyHappyApp.jpg", out finalPath);
+			SaveScreenshot(bytes, fileName, out finalPath);
 		}
 
 		public void SaveScreenshot(byte[] textureBytes, string filename, out string _path)
